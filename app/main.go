@@ -3,10 +3,12 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strconv"
 	"strings"
 	"time"
@@ -67,6 +69,25 @@ func scrapeOffDateTime() OffDateTime {
 	}
 }
 
+func isEqualDate(offDate []string) bool {
+	nowMonth := time.Now().Format("01")
+	p, _ := os.Getwd()
+	inputJSON := filepath.Join(p, "dist", "api", getNowYear(), nowMonth+".json")
+
+	jsonString, err := ioutil.ReadFile(inputJSON)
+	if err != nil {
+		log.Print(err)
+		return false
+	}
+
+	jsonData := new(OffDateTime)
+	if err = json.Unmarshal(jsonString, jsonData); err != nil {
+		log.Fatal(err)
+	}
+
+	return reflect.DeepEqual(offDate, jsonData.Date)
+}
+
 func generateOffDate(apiData OffDateTime) {
 	nowMonth := time.Now().Format("01")
 	p, _ := os.Getwd()
@@ -101,5 +122,7 @@ func generateOffDate(apiData OffDateTime) {
 
 func main() {
 	apiData := scrapeOffDateTime()
-	generateOffDate(apiData)
+	if isEqual := isEqualDate(apiData.Date); !isEqual {
+		generateOffDate(apiData)
+	}
 }
