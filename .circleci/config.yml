@@ -1,0 +1,78 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.11
+    working_directory: /go/src/github.com/shooontan/seiyu5off
+    environment:
+      TZ: Asia/Tokyo
+    steps:
+      - checkout
+      - run:
+          name: go get
+          pwd: app
+          command: go get
+      - run:
+          name: go run
+          pwd: app
+          command: go run main.go
+      - save_cache:
+          key: seiyu5off-{{ epoch }}
+          paths:
+            - /go/src/github.com/shooontan/seiyu5off/app/dist
+  deploy:
+    docker:
+      - image: circleci/golang:1.11
+    working_directory: /go/src/github.com/shooontan/seiyu5off
+    steps:
+      - restore_cache:
+          keys:
+            - seiyu5off
+      - add_ssh_keys:
+          fingerprints:
+            - "61:80:89:17:9d:cf:7a:4c:29:6c:14:f5:08:b3:01:02"
+      - run:
+          name: git config
+          command: |
+              mkdir -p ~/.ssh
+              echo -e "host github.com \n StrictHostKeyChecking no" >> ~/.ssh/config
+              git config --global user.name "CircleCi"
+              git config --global user.email "logo.bee.doo19@gmail.com"
+      - run: git clone git@github.com:shooontan/seiyu5off.git
+      - run:
+          name: git deploy
+          pwd: seiyu5off
+          command: |
+              mkdir -p app/dist/api
+              cp -ar ../app/dist/api/* ./app/dist/api
+              git add .
+              git commit -m ":calendar:by CircleCi [ci skip]"
+              git push origin master
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: master
+  build_and_deploy_cron:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: master
+    triggers:
+      - schedule:
+          cron: "0 0 1 * *" # UTC
+          filters:
+            branches:
+              ignore: master
