@@ -67,3 +67,6 @@ workflows:
     triggers:
       - schedule:
           cron: "0 0 1 * *" # UTC
+          filters:
+            branches:
+              only: master
