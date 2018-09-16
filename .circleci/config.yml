@@ -41,15 +41,18 @@ jobs:
               git config --global user.email "logo.bee.doo19@gmail.com"
       - run: git clone git@github.com:shooontan/seiyu5off.git
       - run:
-          name: git deploy
+          name: git deploy if diff exists
           pwd: seiyu5off
           command: |
               mkdir -p app/dist/api
               cp -ar ../app/dist/api/* ./app/dist/api
               git add .
-              git commit -m ":calendar:by CircleCi [ci skip]"
-              git push origin master
-
+              if [[ $(git diff --cached) ]]; then
+                git commit -m ":calendar:by CircleCi [ci skip]"
+                git push origin master
+              else
+                echo "nothing to commit, working tree clean"
+              fi
 workflows:
   version: 2
   build_and_deploy:
