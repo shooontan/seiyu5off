@@ -2,6 +2,14 @@
 
 
 [[projects]]
+  digest = "1:17131c6158c724a12a6249bf4e28c239357695cb15ffccb6bc3f246d95e04f09"
+  name = "bou.ke/monkey"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "bdf6dea004c6fd1cdf4b25da8ad45a606c09409a"
+  version = "v1.0.1"
+
+[[projects]]
   digest = "1:a62f6ed230a8cd138a9efbe718e7d0b0294f139266f5f55cd942769a9aac8de2"
   name = "github.com/PuerkitoBio/goquery"
   packages = ["."]
@@ -18,19 +26,30 @@
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:3cc63a7ed7402f06344230337d2d4c8d6fe728c55d31d814b8c5cb0735076745"
+  name = "github.com/tkuchiki/faketime"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "27d95c076f8af2b02de39177e2f210d99a1d8674"
+  version = "v0.1.0"
+
+[[projects]]
   branch = "master"
-  digest = "1:afd623c23f862e01d1b29377b691a65e1ac8aa5df6674eb79d19a16ba95947e9"
+  digest = "1:a367927017e67fb73acff1959106cb512b13fcec1a1f394a4dbf9dfb9a78b5b6"
   name = "golang.org/x/net"
   packages = [
     "html",
     "html/atom",
   ]
   pruneopts = "UT"
-  revision = "2f5d2388922f370f4355f327fcf4cfe9f5583908"
+  revision = "4dfa2610cdf3b287375bbba5b8f2a14d3b01d8de"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = ["github.com/PuerkitoBio/goquery"]
+  input-imports = [
+    "github.com/PuerkitoBio/goquery",
+    "github.com/tkuchiki/faketime",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
