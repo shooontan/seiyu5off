@@ -2,6 +2,13 @@ language: go
 go:
   - "1.11"
 
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - tree
+
 before_install:
   - go get -u github.com/golang/dep/cmd/dep
 
@@ -16,7 +23,7 @@ jobs:
     - stage: deploy
       script:
         - go run main.go
-      after_success:
+        - tree ./dist/api/
         - bash ./scripts/deploy.sh
 
 

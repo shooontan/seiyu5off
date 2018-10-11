@@ -18,7 +18,7 @@ cp -ar ../dist/api/* ./dist/api
 
 git add .
 if [[ $(git diff --cached) ]]; then
-  git commit -m ":calendar:by CircleCi [ci skip]"
+  git commit -m ":calendar: by Travis CI [ci skip]"
   git push origin master
 else
   echo "nothing to commit, working tree clean"
