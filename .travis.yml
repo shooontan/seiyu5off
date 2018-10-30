@@ -9,6 +9,9 @@ addons:
     packages:
       - tree
 
+before_script:
+  - export TZ=Asia/Tokyo
+
 before_install:
   - go get -u github.com/golang/dep/cmd/dep
 
