@@ -3,6 +3,7 @@ package util
 import (
 	"log"
 	"net/http"
+	"sort"
 	"strings"
 	"time"
 
@@ -44,6 +45,13 @@ func Scrape() Scraping {
 		offDate := time.Date(offTimeYear, offTimeMonth, offTimeDay, 0, 0, 0, 0, time.Local).Format("2006-01-02")
 		offDateMap[offMonth] = append(offDateMap[offMonth], offDate)
 	})
+
+	// 日付をソートする
+	for month := range offDateMap {
+		sort.SliceStable(offDateMap[month], func(i, j int) bool {
+			return offDateMap[month][i] < offDateMap[month][j]
+		})
+	}
 
 	return Scraping{
 		Updated: time.Now().Format("2006-01-02 15:04:05"),
