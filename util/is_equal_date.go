@@ -16,7 +16,7 @@ func IsEqualDate(offDate []string) bool {
 	month := splitDate[1]
 
 	p, _ := os.Getwd()
-	inputJSON := filepath.Join(p, "dist", "api", year, month+".json")
+	inputJSON := filepath.Join(p, "dist", "api", "v1", year, month+".json")
 
 	jsonString, err := ioutil.ReadFile(inputJSON)
 	if err != nil {
