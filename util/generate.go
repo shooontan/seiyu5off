@@ -25,7 +25,7 @@ func Generate(apiData Api) {
 	out := new(bytes.Buffer)
 	json.Indent(out, outputJSON, "", "    ")
 
-	outputDir := filepath.Join(p, "dist", "api", "v1", year)
+	outputDir := filepath.Join(p, "www", "api", "v1", year)
 
 	// 出力ディレクトリの確認
 	if err := os.MkdirAll(outputDir, 0777); err != nil {

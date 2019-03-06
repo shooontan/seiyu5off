@@ -13,8 +13,8 @@ git config --global user.email "travis.logo.bee.doo19@gmail.com"
 git clone git@github.com:shooontan/seiyu5off.git
 
 cd seiyu5off
-mkdir -p dist/api
-cp -ar ../dist/api/* ./dist/api
+mkdir -p www/api
+cp -ar ../www/api/* ./www/api
 
 git add .
 if [[ $(git diff --cached) ]]; then
