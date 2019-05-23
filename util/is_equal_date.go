@@ -1,33 +1,70 @@
 package util
 
 import (
-	"encoding/json"
-	"io/ioutil"
-	"log"
-	"os"
-	"path/filepath"
 	"reflect"
-	"strings"
+	"sort"
+	"time"
 )
 
-func IsEqualDate(offDate []string) bool {
-	splitDate := strings.Split(offDate[0], "-")
-	year := splitDate[0]
-	month := splitDate[1]
-
-	p, _ := os.Getwd()
-	inputJSON := filepath.Join(p, "www", "api", "v1", year, month+".json")
-
-	jsonString, err := ioutil.ReadFile(inputJSON)
-	if err != nil {
-		log.Print(err)
-		return false
+// IsEqualDate compares Date array to Old Date array
+// If same date, return true. Or not, return false.
+func IsEqualDate(offDate []string, jsonData *Api) bool {
+	if reflect.DeepEqual(offDate, jsonData.Date) {
+		return true
 	}
 
-	jsonData := new(Api)
-	if err = json.Unmarshal(jsonString, jsonData); err != nil {
-		log.Fatal(err)
+	for _, offDateItem := range offDate {
+		if !include(jsonData.Date, offDateItem) {
+			return false
+		}
 	}
 
-	return reflect.DeepEqual(offDate, jsonData.Date)
+	for _, dateItem := range jsonData.Date {
+		if include(offDate, dateItem) {
+			continue
+		}
+
+		if !beforeDate(dateItem) {
+			return false
+		}
+	}
+
+	return true
+}
+
+// MergeDate merges Date array.
+// Date is sorted.
+func MergeDate(offDate []string, jsonData *Api) []string {
+	for _, dateItem := range jsonData.Date {
+		if include(offDate, dateItem) {
+			continue
+		}
+
+		if beforeDate(dateItem) {
+			offDate = append(offDate, dateItem)
+		}
+	}
+
+	// sort
+	sort.SliceStable(offDate, func(i, j int) bool {
+		return offDate[i] < offDate[j]
+	})
+
+	return offDate
+}
+
+func include(arr []string, key string) bool {
+	for _, v := range arr {
+		if v == key {
+			return true
+		}
+	}
+	return false
+}
+
+func beforeDate(date string) bool {
+	loc, _ := time.LoadLocation("Asia/Tokyo")
+	t, _ := time.ParseInLocation("2006-01-02", date, loc)
+	now := time.Now()
+	return t.Before(now)
 }
