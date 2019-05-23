@@ -6,15 +6,12 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
-func Generate(apiData Api) {
-	splitDate := strings.Split(apiData.Date[0], "-")
-	year := splitDate[0]
-	month := splitDate[1]
-
+// Generate exports JSON file.
+func Generate(apiData Api, jsonpath string, filename string) {
 	p, _ := os.Getwd()
+	outputDir := filepath.Join(p, "www", "api", "v1", jsonpath)
 
 	// json変換
 	outputJSON, err := json.Marshal(apiData)
@@ -25,8 +22,6 @@ func Generate(apiData Api) {
 	out := new(bytes.Buffer)
 	json.Indent(out, outputJSON, "", "    ")
 
-	outputDir := filepath.Join(p, "www", "api", "v1", year)
-
 	// 出力ディレクトリの確認
 	if err := os.MkdirAll(outputDir, 0777); err != nil {
 		log.Fatal("outputdir error")
@@ -34,7 +29,7 @@ func Generate(apiData Api) {
 	}
 
 	// jsonデータを出力
-	file, err := os.Create(filepath.Join(outputDir, month+".json"))
+	file, err := os.Create(filepath.Join(outputDir, filename))
 	if err != nil {
 		log.Fatal("export error")
 		panic(err)
