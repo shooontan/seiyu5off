@@ -1,11 +1,11 @@
-# SEIYU 5% OFF Web API
+# SEIYU 5% OFF Web API & Google カレンダー
 
-西友(SEIYU) - 5% OFF 開催日の一覧を JSON 形式で取得できる Web API です。
+西友(SEIYU) - 5% OFF 開催日の一覧を JSON 形式で取得できる Web API と、開催日が登録されている Google カレンダーです。
 
 開催日のデータは、[西友 - 5%OFF開催日カレンダー | SEIYU](https://www.seiyu.co.jp/service/5off/) から取得しています。
 
 
-## ドキュメント
+## Web API ドキュメント
 
 ### 年ごとの 5% OFF 開催日
 
@@ -62,3 +62,17 @@
     ]
 }
 ```
+
+## Google カレンダー
+
+5% OFF 開催日が登録されている Google カレンダーです。
+
+カレンダー ID: `o7vmmt5nqggrbavlleq5vklnbk@group.calendar.google.com`
+
+公開 URL: [https://calendar.google.com/calendar/embed?src=o7vmmt5nqggrbavlleq5vklnbk%40group.calendar.google.com](https://calendar.google.com/calendar/embed?src=o7vmmt5nqggrbavlleq5vklnbk%40group.calendar.google.com)
+
+### カレンダー追加方法
+
+1. [Google カレンダー](https://calendar.google.com/calendar/)にアクセス
+2. 左下メニュー「他のカレンダー」->「カレンダーに登録」
+3. フォームに上記のカレンダー ID を入力
